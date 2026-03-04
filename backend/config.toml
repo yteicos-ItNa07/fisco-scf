@@ -1,0 +1,13 @@
+[cryptoMaterial]
+
+certPath = "fisco/conf"
+
+[network]
+peers=["127.0.0.1:20200", "127.0.0.1:20201"]
+
+[account]
+keyStoreDir = "account"
+accountFileFormat = "pem"
+
+[threadPool]
+maxBlockingQueueSize = "102400"

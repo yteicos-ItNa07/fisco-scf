@@ -1,0 +1,74 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: supply-chain-finance
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/scf_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: "123456"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+# FISCO-BCOS 配置
+fisco:
+  enabled: true  # 节点配置了rsa_crypto_channel，兼容JDK 17
+  config-path: classpath:fisco/config.toml
+  group-id: 1
+  auto-deploy: true  # 自动部署合约（修改合约后需要重新部署，部署后可改为false）
+  contracts:
+    access-control: "0x8fc93985af95350f7a40851d0206f59147492788"
+    receivables-token: "0x26b7a2b15a84429175873d81fac12f2910d3380c"
+    flow-router: "0x0000000000000000000000000000000000000000"
+    settlement: "0x0000000000000000000000000000000000000000"
+
+# JWT 配置
+jwt:
+  secret: scf-supply-chain-finance-secret-key-2026
+  expiration: 86400000  # 24小时
+
+# 风险评估配置
+risk:
+  base-rate: 0.06  # 基准利率 6%
+  max-rate: 0.08   # 最高利率 8%
+  min-credit-score: 600  # 最低信用分
+
+# IPFS存证配置 (Pinata)
+ipfs:
+  enabled: true
+  pinata:
+    api-key: "a2848bd9aa296c7777dd"
+    api-secret: "aaa764e6962ba5543dfe20e5d98b5dd1c9f79db0b1aed03d8d1449aaebbec56b"
+    jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI5M2FkMWE5MC1iMmViLTRkMDktYmQ0NS1kOWZkYjkxY2Q3NzMiLCJlbWFpbCI6InF4aWE3NDY0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJhMjg0OGJkOWFhMjk2Yzc3NzdkZCIsInNjb3BlZEtleVNlY3JldCI6ImFhYTc2NGU2OTYyYmE1NTQzZGZlMjBlNWQ5OGI1ZGQxYzlmNzlkYjBiMWFlZDAzZDhkMTQ0OWFhZWJiZWM1NmIiLCJleHAiOjE4MDIxNzk4NjJ9.jOPHyGbfGpIcRElNxMZaTPI8ulDFMSgHgKs7creod70"
+    gateway: "https://gateway.pinata.cloud"
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.scf: DEBUG
+    org.fisco.bcos: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

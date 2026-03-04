@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f5f7fa;
+}
+
+.page-container {
+  padding: 20px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #303133;
+  }
+}
+
+.card-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+}
+
+.stats-card {
+  text-align: center;
+  padding: 20px;
+
+  .stats-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: #409EFF;
+    margin-bottom: 8px;
+  }
+
+  .stats-label {
+    font-size: 14px;
+    color: #909399;
+  }
+}
+
+.status-tag {
+  &.created { background: #E6A23C; color: #fff; }
+  &.confirmed { background: #67C23A; color: #fff; }
+  &.financed { background: #409EFF; color: #fff; }
+  &.settled { background: #909399; color: #fff; }
+}
+
+.risk-level {
+  &.low { color: #67C23A; }
+  &.medium { color: #E6A23C; }
+  &.high { color: #F56C6C; }
+}

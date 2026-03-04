@@ -1,0 +1,37 @@
+[cryptoMaterial]
+# 证书目录路径（相对于 resources 目录）
+certPath = "fisco/conf"
+# 是否使用国密算法
+useSMCrypto = "false"
+
+[network]
+# 节点连接地址
+# 本地 Docker 部署的节点
+peers = ["127.0.0.1:20200", "127.0.0.1:20201"]
+# 网络超时配置
+defaultGroup = "group0"
+messageTimeout = "10000"
+
+[account]
+# 账户密钥存储目录
+keyStoreDir = "account"
+# 账户文件路径（留空则自动生成）
+accountFilePath = ""
+# 账户文件格式: pem 或 p12
+accountFileFormat = "pem"
+# 账户地址（留空则使用默认账户）
+accountAddress = ""
+# 密钥密码（pem格式不需要）
+password = ""
+
+[threadPool]
+# Channel消息处理线程数
+channelProcessorThreadSize = "16"
+# 交易回执处理线程数
+receiptProcessorThreadSize = "16"
+# 最大阻塞队列大小
+maxBlockingQueueSize = "102400"
+
+[amop]
+# AMOP 订阅的主题列表（可选）
+# topicList = ["topic1", "topic2"]

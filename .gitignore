@@ -1,0 +1,75 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+*.log
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Database
+*.db
+*.mv.db
+*.trace.db
+scf_db.*
+
+# Blockchain certificates and keys
+*.crt
+*.key
+*.pem
+*.cnf
+account/
+conf/
+nodes/
+build_chain.sh
+
+# FISCO
+fisco/
+sdk.crt
+sdk.key
+ca.crt
+cert.cnf
+pub.pem
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp

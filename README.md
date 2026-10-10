@@ -1,200 +1,175 @@
 # FISCO-SCF: Blockchain-Enabled Supply Chain Finance Platform
 
-A research-oriented platform for supply chain finance built on FISCO-BCOS, combining blockchain-based receivables management, smart-contract automation, and AI-assisted risk intelligence.
+A research-oriented supply-chain finance platform built on FISCO-BCOS, integrating blockchain-based receivables management, financing workflows, enterprise governance, and AI-assisted risk intelligence.
 
-This repository is organized as both a software system and a research archive, making it suitable for academic review, technical demonstration, and external collaboration.
+This repository is designed to serve as both a functional software prototype and a research-ready open project for academic review, technical demonstration, collaboration, and scholarly communication.
 
-## Project Overview
+<p align="center">
+  <img src="./images/login.png" alt="Login screen" width="900" />
+</p>
 
-This project addresses a core problem in modern supply chains: the mismatch between financing demand and traditional credit access. Small and medium enterprises often face financing friction because their receivables are difficult to verify, transfer, and underwrite in a trustworthy and traceable way.
+## Overview
 
-The proposed solution integrates:
+This project addresses a recurring bottleneck in modern supply chains: the mismatch between financing demand and access to trusted, traceable credit. Small and medium-sized enterprises often struggle to convert receivables into reliable financing because their assets are difficult to verify, assign, transfer, and underwrite in a transparent and defensible way.
 
-- blockchain-based asset tokenization and traceability,
-- smart-contract enabled financing workflows,
-- enterprise identity and credit governance,
-- AI-driven risk assessment and decision support,
-- a research-friendly architecture for papers, reports, and academic writing.
+The platform demonstrates a solution that combines:
 
-The platform is designed to be understandable to both technical stakeholders and research evaluators: it demonstrates a complete chain from data and contracts to user-facing financial workflows.
+- blockchain-backed receivables tokenization and traceability,
+- smart-contract-driven financing lifecycle management,
+- enterprise onboarding and credit governance,
+- business workflows for split, transfer, and settlement,
+- AI-assisted risk assessment and support for decision-making,
+- a publication-friendly repository structure for research documentation.
 
-## Research Positioning
+## Why this project matters
 
-This repository sits at the intersection of:
+This project sits at the intersection of:
 
-- blockchain technology and distributed ledger systems,
+- blockchain and distributed ledger technology,
 - financial technology and supply chain finance,
-- machine intelligence and credit/risk analysis,
-- applied research, engineering, and interdisciplinary scholarship.
+- AI-driven risk analysis and decision support,
+- interdisciplinary research, engineering, and academic writing.
 
 It is intended to support:
 
 - platform prototyping and system validation,
-- reproducible experiments and evaluation,
+- reproducible research and technical evaluation,
 - academic writing and publication,
-- demonstration to funding, admissions, and research audiences.
+- demonstration to faculty, researchers, funders, and collaborators.
 
-## Core Features
+## Key capabilities
 
-- Receivables tokenization and lifecycle tracking
-- On-chain enterprise registration and credit governance
-- Smart-contract supported financing approval and disbursement
-- Transfer, split, and settlement workflows for accounts receivable
-- AI-assisted risk scoring and credit decision support
-- Platform-oriented dashboards for enterprises, suppliers, and financial institutions
-- Research-friendly documentation structure for papers and book chapters
+- Receivables issuance, confirmation, and lifecycle tracking
+- On-chain enterprise registration and role-based access
+- Financing application, approval, disbursement, and settlement workflows
+- Receivables split and transfer processes
+- AI-assisted financial risk assessment
+- Multi-role dashboard experience for core enterprises, suppliers, and financial institutions
+- Research-oriented project structure for future expansion and publication
 
-## High-Level Architecture
+## Architecture
 
 ```text
-+---------------------+
-|     Users / Roles   |
-|  Core Enterprise    |
-|  Supplier           |
-|  Financial Institution |
-|  Regulator          |
-+----------+----------+
-           |
-           v
-+---------------------+
-|   Frontend Layer    |
-|  Vue 3 + Vite       |
-|  Dashboard / Forms   |
-+----------+----------+
-           |
-           v
-+---------------------+
-|   Backend Layer     |
-| Spring Boot + REST  |
-| JWT + Business APIs |
-+----------+----------+
-           |
-           v
-+---------------------+
-|   Blockchain Layer  |
-| FISCO-BCOS + Solidity|
-| Smart Contracts     |
-+----------+----------+
-           |
-           v
-+---------------------+
-|  AI / Risk Engine   |
-| Assessment + Models |
-+---------------------+
++---------------------------+
+|       Users / Roles       |
+| Core Enterprise           |
+| Supplier                  |
+| Financial Institution     |
+| Regulator                 |
++-------------+-------------+
+             |
+             v
++---------------------------+
+| Frontend Layer            |
+| Vue 3 + Vite + Element UI|
+| Dashboard + Forms         |
++-------------+-------------+
+             |
+             v
++---------------------------+
+| Backend Layer            |
+| Spring Boot + REST APIs   |
+| JWT Authentication       |
++-------------+-------------+
+             |
+             v
++---------------------------+
+| Blockchain Layer          |
+| FISCO-BCOS + Solidity     |
+| Smart contracts           |
++-------------+-------------+
+             |
+             v
++---------------------------+
+| AI / Risk Intelligence   |
+| Scoring & analytics      |
++---------------------------+
 ```
 
-## Technical Stack
+## Tech stack
 
-| Layer | Technology | Notes |
-| --- | --- | --- |
-| Frontend | Vue 3, Vite, Element Plus | User dashboards and workflow UIs |
-| Backend | Spring Boot, Spring Security, JWT | REST APIs and authentication |
-| Database | MySQL, JPA | Structured operational data |
-| Blockchain | FISCO-BCOS, Solidity | On-chain asset and workflow logic |
-| Smart Contracts | AccessControl, ReceivablesToken | Governance and receivable operations |
-| AI / Analytics | Python, model pipelines, risk scoring | Financial reasoning support |
-| Build / Runtime | Maven, Node.js, Java 11 | Project execution environment |
-| DevOps | GitHub, CI/CD-ready setup | Repository and collaboration support |
+- Frontend: Vue 3, Vite, Element Plus
+- Backend: Spring Boot, Spring Security, JWT
+- Database: MySQL, JPA
+- Blockchain: FISCO-BCOS, Solidity
+- Smart contracts: modular access control and receivables logic
+- AI: Python-based analytics and scoring workflows
+- Build: Maven, Node.js, Java 11
 
-## Repository Structure
+## Repository structure
 
 ```text
 fisco-scf/
 ├── README.md
 ├── LICENSE
+├── CITATION.cff
+├── CONTRIBUTING.md
+├── requirements.txt
 ├── .gitignore
-├── backend/                  # Spring Boot backend
+├── backend/
 │   ├── src/
 │   ├── pom.xml
-│   ├── config.toml
 │   └── ...
-├── frontend/                 # Vue 3 web application
+├── frontend/
 │   ├── src/
 │   ├── package.json
 │   └── ...
-├── blockchain/               # Smart contracts and chain-related assets
+├── blockchain/
 │   └── contracts/
 ├── docs/
 │   ├── architecture/
-│   ├── papers/
-│   ├── book/
+│   ├── api/
 │   ├── screenshots/
-│   └── reports/
+│   └── ...
 ├── research/
-│   ├── methodology/
-│   ├── experiments/
-│   ├── datasets/
-│   ├── evaluation/
-│   └── results/
 ├── assets/
-│   ├── logo/
-│   └── diagrams/
 ├── scripts/
 ├── examples/
-├── notebooks/
-├── tests/
 ├── images/
-└── .github/
+│   ├── login.png
+│   ├── dashboard.png
+│   ├── enterprise-management.png
+│   ├── receivables.png
+│   └── transfer-records.png
+├── .github/
+└── ...
 ```
 
-## Key Research and Product Outcomes
+## Screenshots
 
-This project is designed around four core outputs:
+### Dashboard overview
 
-1. A working supply chain finance platform
-   - enterprise onboarding,
-   - receivable issuance and confirmation,
-   - transfer and splitting,
-   - financing request and settlement workflows.
+<p align="center">
+  <img src="./images/dashboard.png" alt="Dashboard overview" width="900" />
+</p>
 
-2. A blockchain-backed financial data layer
-   - ledger integrity,
-   - tamper-resistant transaction records,
-   - transparent state transitions.
+### Enterprise management
 
-3. AI-enabled risk intelligence
-   - assessment of enterprise and receivable risk,
-   - decision support for financing approval,
-   - analytics for operational oversight.
+<p align="center">
+  <img src="./images/enterprise-management.png" alt="Enterprise management" width="900" />
+</p>
 
-4. Academic and scholarly artifacts
-   - research notes and methodology,
-   - publication-ready content and references,
-   - book or report chapters for interdisciplinary dissemination.
+### Receivables management
 
-## Platform Screenshots
+<p align="center">
+  <img src="./images/receivables.png" alt="Receivables management" width="900" />
+</p>
 
-The following figures show the current platform interface and key business workflows.
+### Transfer records
 
-### Login Screen
+<p align="center">
+  <img src="./images/transfer-records.png" alt="Transfer records" width="900" />
+</p>
 
-![Login Screen](./images/login.png)
-
-### Dashboard Overview
-
-![Dashboard Overview](./images/dashboard.png)
-
-### Enterprise Management
-
-![Enterprise Management](./images/enterprise-management.png)
-
-### Receivables Management
-
-![Receivables Management](./images/receivables.png)
-
-### Transfer Records
-
-![Transfer Records](./images/transfer-records.png)
-
-## Quick Start
+## Quick start
 
 ### Prerequisites
 
-- Java 11
+- Java 11+
 - Maven
 - Node.js 18+
-- MySQL 8.0
-- FISCO-BCOS environment configured for local or testnet deployment
+- MySQL 8.0+
+- FISCO-BCOS client or local test chain environment
 
 ### Backend
 
@@ -212,23 +187,25 @@ npm install
 npm run dev
 ```
 
-### Typical Local Access
+Then open:
 
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:8080/api
 
-## Deployment and Configuration Notes
+## Research and publication readiness
 
-The backend and blockchain layers are designed to work with a local chain configuration and environment-specific storage settings. For reproducibility, keep all of the following in version control:
+This repository has been organized to support:
 
-- contract ABI and bytecode artifacts,
-- network configuration files,
-- application configuration templates,
-- example datasets and seed credentials for development.
+- system demonstration for academic audiences,
+- discussion of blockchain-based financial infrastructure,
+- evidence of business process design and technical implementation,
+- future publication materials and research narratives.
 
-## How to Cite
+The project is explicitly structured for interdisciplinary communication between technical, financial, and academic stakeholders.
 
-If you use this repository in a project, paper, or thesis, please cite the project as follows.
+## How to cite
+
+If you use this project in research, coursework, or a manuscript, please cite it as follows.
 
 Plain text:
 
@@ -246,26 +223,21 @@ BibTeX:
 }
 ```
 
-If you are preparing a formal paper or dissertation, adapt the citation to your institutional style and append the relevant publication or manuscript reference.
-
 ## License
 
-This project is released under the MIT License to support open research, reproducible software development, and academic dissemination.
+This project is released under the MIT License, which supports open research, reproducible software development, and unrestricted academic sharing.
 
-## Project Status
+## Contributing
 
-- Platform prototype: active
-- Blockchain integration: active
-- Research documentation: in progress
-- Publication materials: expanding
+Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines, issue reporting, and pull request expectations.
 
 ## Contact
 
-For collaborations, academic inquiries, or research discussions, please contact the project maintainer:
+For collaborations, academic inquiries, or research discussions, please contact:
 
 - Email: [juliana.tsui@outlook.com](mailto:juliana.tsui@outlook.com)
 - GitHub: [@yteicos-ItNa07](https://github.com/yteicos-ItNa07)
 
 ---
 
-This repository is structured to present both the engineering contribution and the research narrative clearly to reviewers, faculty, students, and collaborators.
+This repository is intended to present both the engineering contribution and the research narrative clearly to reviewers, faculty, students, collaborators, and project stakeholders.

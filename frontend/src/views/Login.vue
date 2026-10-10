@@ -183,6 +183,7 @@ async function handleLogin() {
     router.push('/')
   } catch (error) {
     console.error(error)
+    ElMessage.error('用户名或密码错误')
   } finally {
     loading.value = false
   }

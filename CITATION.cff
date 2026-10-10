@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite it using the metadata below."
+title: "FISCO-SCF: Blockchain-Enabled Supply Chain Finance Platform"
+authors:
+  - family-names: Tsui
+    given-names: Juliana
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+version: 1.0.0
+date-released: 2026-10-10
+url: "https://github.com/yteicos-ItNa07/fisco-scf"
+repository-code: "https://github.com/yteicos-ItNa07/fisco-scf"
+license: "MIT"
+keywords:
+  - blockchain
+  - supply-chain-finance
+  - fisco-bcos
+  - fintech
+  - ai
+abstract: >-
+  A blockchain-enabled platform for supply chain finance, combining receivables
+  tokenization, financing workflows, enterprise governance, and AI-assisted risk
+  analysis for research and demonstration purposes.

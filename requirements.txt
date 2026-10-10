@@ -1,0 +1,6 @@
+# Python dependencies for AI and analytics components
+numpy>=1.26.0
+pandas>=2.2.0
+scikit-learn>=1.1.0
+matplotlib>=3.8.0
+jupyter>=1.7.0

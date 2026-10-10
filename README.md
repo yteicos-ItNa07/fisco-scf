@@ -239,7 +239,7 @@ BibTeX:
 ```bibtex
 @misc{fisco_scf_2026,
   title = {FISCO-SCF: Blockchain-Enabled Supply Chain Finance Platform},
-  author = {Your Name and Collaborators},
+  author = {Juliana Tsui},
   year = {2026},
   howpublished = {GitHub Repository},
   url = {https://github.com/yteicos-ItNa07/fisco-scf}
@@ -250,7 +250,7 @@ If you are preparing a formal paper or dissertation, adapt the citation to your 
 
 ## License
 
-This project is intended for open research, reproducible software development, and academic dissemination. Final license selection will be completed in the repository setup phase (MIT or Apache 2.0).
+This project is released under the MIT License to support open research, reproducible software development, and academic dissemination.
 
 ## Project Status
 

@@ -162,33 +162,29 @@ This project is designed around four core outputs:
    - publication-ready content and references,
    - book or report chapters for interdisciplinary dissemination.
 
-## Screenshots and Visual References
+## Platform Screenshots
 
-The project is prepared for visual documentation. Replace the placeholders below with final images before release.
+The following figures show the current platform interface and key business workflows.
+
+### Login Screen
+
+![Login Screen](./images/login.png)
 
 ### Dashboard Overview
 
-![Dashboard overview placeholder](docs/screenshots/dashboard/overview.png)
+![Dashboard Overview](./images/dashboard.png)
 
-> Replace with a final platform dashboard screenshot.
+### Enterprise Management
 
-### Blockchain Workflow
+![Enterprise Management](./images/enterprise-management.png)
 
-![Blockchain workflow placeholder](docs/screenshots/blockchain/workflow.png)
+### Receivables Management
 
-> Replace with a transaction flow or contract interaction diagram.
+![Receivables Management](./images/receivables.png)
 
-### AI Risk Analytics
+### Transfer Records
 
-![AI risk analytics placeholder](docs/screenshots/ai-analytics/risk-model.png)
-
-> Replace with the risk scoring dashboard or evaluation plot.
-
-### Publication Figures
-
-![Research figure placeholder](docs/papers/figures/placeholder.png)
-
-> Use this area for publication figures and benchmark visualizations.
+![Transfer Records](./images/transfer-records.png)
 
 ## Quick Start
 

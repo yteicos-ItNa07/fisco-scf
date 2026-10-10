@@ -1,75 +1,184 @@
-# Java
+# -----------------------------------------------------------------------------
+# Operating system
+# -----------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+
+# -----------------------------------------------------------------------------
+# IDE / editors
+# -----------------------------------------------------------------------------
+.idea/
+.vscode/
+*.code-workspace
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+*~
+
+# -----------------------------------------------------------------------------
+# Java / Maven / Gradle
+# -----------------------------------------------------------------------------
 *.class
 *.jar
 *.war
 *.ear
-target/
+*.nar
+*.zip
+*.tar.gz
+*.tgz
 *.log
 
-# Maven
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
-
-# Gradle
+# Build outputs
+**/target/
+**/build/
+**/out/
+**/bin/
 .gradle/
-build/
+.gradle-cache/
 
-# IDE
-.idea/
-*.iml
-*.ipr
-*.iws
-.vscode/
-*.swp
-*.swo
+# Maven wrapper local files
+.mvn/
+!/.mvn/wrapper/maven-wrapper.properties
 
-# OS
-.DS_Store
-Thumbs.db
+# JPA / app temp artifacts
+*.hprof
+hs_err_pid*
 
-# Node.js
+# -----------------------------------------------------------------------------
+# Node / frontend / JavaScript
+# -----------------------------------------------------------------------------
 node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+.npm/
+.pnpm-store/
+.yarn/
+.yarn-cache/
+.yarn-integrity
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.npm
-.yarn-integrity
+pnpm-debug.log*
+coverage/
 
-# Database
-*.db
-*.mv.db
-*.trace.db
-scf_db.*
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+venv/
+.venv/
+env/
+ENV/
+.ipynb_checkpoints/
+*.egg-info/
+.eggs/
+.dist/
+build/
+dist/
 
-# Blockchain certificates and keys
+# -----------------------------------------------------------------------------
+# Solidity / blockchain / smart contracts
+# -----------------------------------------------------------------------------
+**/artifacts/
+**/cache/
+**/node_modules/
+**/coverage/
+**/coverage.json
+**/*.dbg.json
+
+# Common blockchain secrets and local chain directories
+*.pem
 *.crt
 *.key
-*.pem
-*.cnf
+*.csr
+*.p12
+*.pfx
+*.keystore
+*.jks
 account/
+accounts/
+keys/
+keystore/
+cert/
 conf/
-nodes/
-build_chain.sh
-
-# FISCO
 fisco/
+blockchain-data/
+chain-data/
+logs/
+node0/
+node1/
+node2/
+node3/
+
+# FISCO-BCOS local generated files
+build_chain.sh
+*.cnf
 sdk.crt
 sdk.key
 ca.crt
-cert.cnf
 pub.pem
+cert.cnf
 
-# Logs
-logs/
+# -----------------------------------------------------------------------------
+# Databases / local data stores
+# -----------------------------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+*.sql.gz
+*.mv.db
+*.trace.db
+scf_db*
+
+dump.sql
+
+# -----------------------------------------------------------------------------
+# Environment files / secrets
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.secret
+*.token
+secrets/
+
+# -----------------------------------------------------------------------------
+# Logs / runtime artifacts
+# -----------------------------------------------------------------------------
 *.log
-
-# Temporary files
+logs/
+*.pid
+tmp/
+temp/
 *.tmp
 *.temp
+
+# -----------------------------------------------------------------------------
+# Project-specific generated files
+# -----------------------------------------------------------------------------
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+frontend/dist/
+frontend/.cache/
+research/results/generated/
+assets/generated/
+
+# -----------------------------------------------------------------------------
+# Git keep exceptions
+# -----------------------------------------------------------------------------
+!.gitkeep

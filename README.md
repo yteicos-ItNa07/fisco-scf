@@ -261,7 +261,10 @@ This project is intended for open research, reproducible software development, a
 
 ## Contact
 
-For collaborations, academic inquiries, or research discussions, please contact the project maintainer through the repository owner or institutional affiliation.
+For collaborations, academic inquiries, or research discussions, please contact the project maintainer:
+
+- Email: [juliana.tsui@outlook.com](mailto:juliana.tsui@outlook.com)
+- GitHub: [@yteicos-ItNa07](https://github.com/yteicos-ItNa07)
 
 ---
 

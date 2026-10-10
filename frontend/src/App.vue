@@ -1,11 +1,17 @@
 <template>
-  <el-config-provider :locale="zhCn">
+  <el-config-provider :locale="localeStore.currentLocale">
     <router-view />
   </el-config-provider>
 </template>
 
 <script setup>
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import { useLocaleStore } from '@/store/locale'
+
+const localeStore = useLocaleStore()
+
+if (typeof document !== 'undefined') {
+  document.documentElement.lang = localeStore.locale
+}
 </script>
 
 <style>

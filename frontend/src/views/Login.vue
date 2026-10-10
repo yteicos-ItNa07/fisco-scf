@@ -1,6 +1,5 @@
 <template>
   <div class="login-container">
-    <!-- 左侧品牌区域 -->
     <div class="brand-section">
       <div class="brand-content">
         <div class="logo-area">
@@ -11,9 +10,9 @@
               <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <h1>供应链金融平台</h1>
+          <h1>{{ localeStore.t('login.title') }}</h1>
         </div>
-        <p class="brand-desc">基于 FISCO-BCOS 区块链的应收账款数字化融资解决方案</p>
+        <p class="brand-desc">{{ localeStore.t('login.subtitle') }}</p>
 
         <div class="features">
           <div class="feature-item">
@@ -23,8 +22,8 @@
               </svg>
             </div>
             <div class="feature-text">
-              <h3>安全可信</h3>
-              <p>区块链技术保障交易安全</p>
+              <h3>{{ localeStore.t('login.security') }}</h3>
+              <p>{{ localeStore.t('login.securityDesc') }}</p>
             </div>
           </div>
           <div class="feature-item">
@@ -35,8 +34,8 @@
               </svg>
             </div>
             <div class="feature-text">
-              <h3>高效便捷</h3>
-              <p>快速完成融资审批流程</p>
+              <h3>{{ localeStore.t('login.efficient') }}</h3>
+              <p>{{ localeStore.t('login.efficientDesc') }}</p>
             </div>
           </div>
           <div class="feature-item">
@@ -48,14 +47,13 @@
               </svg>
             </div>
             <div class="feature-text">
-              <h3>通证流转</h3>
-              <p>应收账款自由拆分转让</p>
+              <h3>{{ localeStore.t('login.tokenFlow') }}</h3>
+              <p>{{ localeStore.t('login.tokenFlowDesc') }}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 动态背景 -->
       <div class="bg-animation">
         <div class="cube"></div>
         <div class="cube"></div>
@@ -65,19 +63,18 @@
       </div>
     </div>
 
-    <!-- 右侧登录区域 -->
     <div class="login-section">
       <div class="login-box">
         <div class="login-header">
-          <h2>欢迎登录</h2>
-          <p>请输入您的账号信息</p>
+          <h2>{{ localeStore.t('login.welcome') }}</h2>
+          <p>{{ localeStore.t('login.prompt') }}</p>
         </div>
 
         <el-form ref="formRef" :model="form" :rules="rules" class="login-form">
           <el-form-item prop="username">
             <el-input
               v-model="form.username"
-              placeholder="请输入用户名"
+              :placeholder="localeStore.t('login.username')"
               prefix-icon="User"
               size="large"
             />
@@ -87,7 +84,7 @@
             <el-input
               v-model="form.password"
               type="password"
-              placeholder="请输入密码"
+              :placeholder="localeStore.t('login.password')"
               prefix-icon="Lock"
               size="large"
               show-password
@@ -103,8 +100,8 @@
               class="login-btn"
               @click="handleLogin"
             >
-              <span v-if="!loading">登 录</span>
-              <span v-else>登录中...</span>
+              <span v-if="!loading">{{ localeStore.t('login.login') }}</span>
+              <span v-else>{{ localeStore.t('login.loggingIn') }}</span>
             </el-button>
           </el-form-item>
         </el-form>
@@ -112,27 +109,27 @@
         <div class="demo-accounts">
           <div class="demo-title">
             <span class="line"></span>
-            <span class="text">快速体验</span>
+            <span class="text">{{ localeStore.t('login.quickExperience') }}</span>
             <span class="line"></span>
           </div>
           <div class="demo-tags">
             <div class="demo-tag core" @click="fillDemo('core')">
               <span class="icon">🏢</span>
-              <span class="label">核心企业</span>
+              <span class="label">{{ localeStore.t('login.core') }}</span>
             </div>
             <div class="demo-tag supplier" @click="fillDemo('supplier')">
               <span class="icon">🏭</span>
-              <span class="label">供应商</span>
+              <span class="label">{{ localeStore.t('login.supplier') }}</span>
             </div>
             <div class="demo-tag bank" @click="fillDemo('bank')">
               <span class="icon">🏦</span>
-              <span class="label">金融机构</span>
+              <span class="label">{{ localeStore.t('login.bank') }}</span>
             </div>
           </div>
         </div>
 
         <div class="login-footer">
-          <p>© 2026 供应链金融平台 · 区块链赋能产业金融</p>
+          <p>{{ localeStore.t('login.footer') }}</p>
         </div>
       </div>
     </div>
@@ -140,13 +137,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
+import { useLocaleStore } from '@/store/locale'
 import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const userStore = useUserStore()
+const localeStore = useLocaleStore()
 
 const formRef = ref()
 const loading = ref(false)
@@ -156,10 +155,10 @@ const form = reactive({
   password: ''
 })
 
-const rules = {
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-}
+const rules = computed(() => ({
+  username: [{ required: true, message: localeStore.t('login.validation.username'), trigger: 'blur' }],
+  password: [{ required: true, message: localeStore.t('login.validation.password'), trigger: 'blur' }]
+}))
 
 const demoAccounts = {
   core: { username: 'huawei_admin', password: '123456' },
@@ -180,7 +179,7 @@ async function handleLogin() {
   loading.value = true
   try {
     await userStore.login(form.username, form.password)
-    ElMessage.success('登录成功')
+    ElMessage.success(localeStore.t('login.success'))
     router.push('/')
   } catch (error) {
     console.error(error)

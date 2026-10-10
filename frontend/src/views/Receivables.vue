@@ -1,55 +1,55 @@
 <template>
   <div class="page-container">
     <div class="page-header">
-      <h2>应收账款管理</h2>
+      <h2>{{ localeStore.t('receivables.title') }}</h2>
       <el-button
         v-if="userStore.enterpriseRole === 'CORE_ENTERPRISE'"
         type="primary"
         @click="showIssueDialog = true"
       >
         <el-icon><Plus /></el-icon>
-        签发通证
+        {{ localeStore.t('receivables.issueButton') }}
       </el-button>
     </div>
 
     <div class="card-box">
       <el-table :data="receivables" v-loading="loading" style="width: 100%">
-        <el-table-column prop="tokenId" label="通证ID" width="100" />
-        <el-table-column prop="issuer.name" label="签发方(核心企业)" width="180" />
-        <el-table-column prop="holder.name" label="持有方" width="150" />
-        <el-table-column label="金额" width="150">
+        <el-table-column prop="tokenId" :label="localeStore.t('receivables.columns.tokenId')" width="100" />
+        <el-table-column prop="issuer.name" :label="localeStore.t('receivables.columns.issuer')" width="180" />
+        <el-table-column prop="holder.name" :label="localeStore.t('receivables.columns.holder')" width="150" />
+        <el-table-column :label="localeStore.t('receivables.columns.amount')" width="150">
           <template #default="{ row }">
             <div>¥{{ formatMoney(row.faceValue) }}</div>
             <div style="color: #909399; font-size: 12px" v-if="row.remainingValue !== row.faceValue">
-              剩余: ¥{{ formatMoney(row.remainingValue) }}
+              {{ localeStore.t('receivables.columns.remaining') }}: ¥{{ formatMoney(row.remainingValue) }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="annualRate" label="年化利率" width="100">
+        <el-table-column prop="annualRate" :label="localeStore.t('receivables.columns.annualRate')" width="100">
           <template #default="{ row }">
             {{ (row.annualRate * 100).toFixed(2) }}%
           </template>
         </el-table-column>
-        <el-table-column prop="maturityDate" label="到期日" width="120" />
-        <el-table-column prop="daysToMaturity" label="剩余天数" width="100">
+        <el-table-column prop="maturityDate" :label="localeStore.t('receivables.columns.maturityDate')" width="120" />
+        <el-table-column prop="daysToMaturity" :label="localeStore.t('receivables.columns.remainingDays')" width="100">
           <template #default="{ row }">
             <el-tag :type="row.daysToMaturity <= 30 ? 'danger' : row.daysToMaturity <= 90 ? 'warning' : 'success'">
-              {{ row.daysToMaturity }}天
+              {{ row.daysToMaturity }}{{ localeStore.t('receivables.columns.day') }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="合同" width="80">
+        <el-table-column :label="localeStore.t('receivables.columns.contract')" width="80">
           <template #default="{ row }">
-            <el-tag v-if="row.contractHash" type="success" size="small">已存证</el-tag>
-            <el-tag v-else type="info" size="small">无</el-tag>
+            <el-tag v-if="row.contractHash" type="success" size="small">{{ localeStore.t('receivables.columns.contractStatusRecorded') }}</el-tag>
+            <el-tag v-else type="info" size="small">{{ localeStore.t('receivables.columns.contractStatusNone') }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="status" :label="localeStore.t('receivables.columns.status')" width="100">
           <template #default="{ row }">
             <el-tag :type="statusType[row.status]">{{ statusLabels[row.status] }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="txHash" label="交易哈希" width="150">
+        <el-table-column prop="txHash" :label="localeStore.t('receivables.columns.txHash')" width="150">
           <template #default="{ row }">
             <el-tooltip v-if="row.txHash" :content="row.txHash" placement="top">
               <span class="hash-text">{{ row.txHash?.slice(0, 10) }}...</span>
@@ -57,16 +57,16 @@
             <span v-else style="color: #909399">-</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="280" fixed="right">
+        <el-table-column :label="localeStore.t('receivables.columns.action')" width="280" fixed="right">
           <template #default="{ row }">
-            <el-button size="small" @click="viewDetail(row)">详情</el-button>
+            <el-button size="small" @click="viewDetail(row)">{{ localeStore.t('receivables.columns.details') }}</el-button>
             <el-button
               v-if="row.status === 'CONFIRMED' && row.holder.id === userStore.enterprise?.id"
               size="small"
               type="success"
               @click="openSplit(row)"
             >
-              拆分
+              {{ localeStore.t('receivables.columns.split') }}
             </el-button>
             <el-button
               v-if="row.status === 'CONFIRMED' && row.holder.id === userStore.enterprise?.id"
@@ -74,7 +74,7 @@
               type="primary"
               @click="openFinancing(row)"
             >
-              融资
+              {{ localeStore.t('receivables.columns.finance') }}
             </el-button>
             <el-button
               v-if="row.status === 'CONFIRMED' && row.holder.id === userStore.enterprise?.id"
@@ -82,7 +82,7 @@
               type="warning"
               @click="openTransfer(row)"
             >
-              转让
+              {{ localeStore.t('receivables.columns.transfer') }}
             </el-button>
             <el-button
               v-if="(row.status === 'CONFIRMED' || row.status === 'FINANCED' || row.status === 'PARTIALLY_FINANCED') && row.issuer.id === userStore.enterprise?.id && row.daysToMaturity <= 0"
@@ -91,45 +91,44 @@
               @click="handleSettle(row)"
               :loading="row.settling"
             >
-              结算
+              {{ localeStore.t('receivables.columns.settle') }}
             </el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
 
-    <!-- 签发应收账款对话框 -->
-    <el-dialog v-model="showIssueDialog" title="签发应收账款" width="600px" @close="resetIssueForm">
+    <el-dialog v-model="showIssueDialog" :title="localeStore.t('receivables.issueDialog.title')" width="600px" @close="resetIssueForm">
       <el-form ref="issueFormRef" :model="issueForm" :rules="issueRules" label-width="100px">
-        <el-form-item label="接收方" prop="holderId">
-          <el-select v-model="issueForm.holderId" placeholder="选择供应商" style="width: 100%">
+        <el-form-item :label="localeStore.t('receivables.issueDialog.recipient')" prop="holderId">
+          <el-select v-model="issueForm.holderId" :placeholder="localeStore.t('receivables.issueDialog.recipientPlaceholder')" style="width: 100%">
             <el-option v-for="e in suppliers" :key="e.id" :label="e.name" :value="e.id" />
           </el-select>
         </el-form-item>
 
-        <el-form-item label="票面金额" prop="faceValue">
+        <el-form-item :label="localeStore.t('receivables.issueDialog.faceValue')" prop="faceValue">
           <el-input-number
             v-model="issueForm.faceValue"
             :min="1000"
             :max="100000000"
             :step="10000"
             style="width: 100%"
-            placeholder="输入金额（元）"
+            :placeholder="localeStore.t('receivables.issueDialog.faceValuePlaceholder')"
           />
         </el-form-item>
 
-        <el-form-item label="到期日" prop="maturityDate">
+        <el-form-item :label="localeStore.t('receivables.issueDialog.maturityDate')" prop="maturityDate">
           <el-date-picker
             v-model="issueForm.maturityDate"
             type="date"
-            placeholder="选择到期日"
+            :placeholder="localeStore.t('receivables.issueDialog.maturityPlaceholder')"
             style="width: 100%"
             :disabled-date="(date) => date < new Date()"
             value-format="YYYY-MM-DD"
           />
         </el-form-item>
 
-        <el-form-item label="年化利率" prop="annualRate">
+        <el-form-item :label="localeStore.t('receivables.issueDialog.annualRate')" prop="annualRate">
           <el-slider
             v-model="issueForm.annualRate"
             :min="3"
@@ -140,13 +139,13 @@
           <span style="margin-left: 10px; color: #409EFF">{{ issueForm.annualRate }}%</span>
         </el-form-item>
 
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="issueForm.description" type="textarea" placeholder="输入采购说明等" />
+        <el-form-item :label="localeStore.t('receivables.issueDialog.description')" prop="description">
+          <el-input v-model="issueForm.description" type="textarea" :placeholder="localeStore.t('receivables.issueDialog.descriptionPlaceholder')" />
         </el-form-item>
 
-        <el-divider content-position="left">电子合同存证（可选）</el-divider>
+        <el-divider :content-position="'left'">{{ localeStore.t('receivables.issueDialog.contractTitle') }}</el-divider>
 
-        <el-form-item label="合同文件">
+        <el-form-item :label="localeStore.t('receivables.issueDialog.contractFile')">
           <el-upload
             ref="uploadRef"
             class="contract-upload"
@@ -159,44 +158,43 @@
           >
             <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
             <div class="el-upload__text">
-              将文件拖到此处，或<em>点击上传</em>
+              {{ localeStore.t('receivables.issueDialog.uploadPrompt') }}
             </div>
             <template #tip>
               <div class="el-upload__tip">
-                支持 PDF、Word、图片，大小不超过 10MB
+                {{ localeStore.t('receivables.issueDialog.uploadTip') }}
               </div>
             </template>
           </el-upload>
         </el-form-item>
 
-        <el-form-item v-if="selectedFile" label="文件信息">
+        <el-form-item v-if="selectedFile" :label="localeStore.t('receivables.issueDialog.fileInfo')">
           <el-descriptions :column="2" size="small" border>
-            <el-descriptions-item label="文件名">{{ selectedFile.name }}</el-descriptions-item>
-            <el-descriptions-item label="大小">{{ formatFileSize(selectedFile.size) }}</el-descriptions-item>
+            <el-descriptions-item :label="localeStore.t('receivables.issueDialog.fileName')">{{ selectedFile.name }}</el-descriptions-item>
+            <el-descriptions-item :label="localeStore.t('receivables.issueDialog.fileSize')">{{ formatFileSize(selectedFile.size) }}</el-descriptions-item>
           </el-descriptions>
         </el-form-item>
       </el-form>
 
       <template #footer>
-        <el-button @click="showIssueDialog = false">取消</el-button>
+        <el-button @click="showIssueDialog = false">{{ localeStore.t('receivables.issueDialog.cancel') }}</el-button>
         <el-button type="primary" @click="handleIssue" :loading="issueLoading">
-          {{ selectedFile ? '签发并上传合同' : '签发通证' }}
+          {{ selectedFile ? localeStore.t('receivables.issueDialog.submitWithContract') : localeStore.t('receivables.issueDialog.submit') }}
         </el-button>
       </template>
     </el-dialog>
 
-    <!-- 拆分对话框 -->
-    <el-dialog v-model="showSplitDialog" title="拆分应收账款" width="600px">
+    <el-dialog v-model="showSplitDialog" :title="localeStore.t('receivables.splitDialog.title')" width="600px">
       <el-alert type="info" :closable="false" style="margin-bottom: 20px">
-        <p>原通证金额: ¥{{ formatMoney(currentReceivable?.remainingValue) }}</p>
+        <p>{{ localeStore.t('receivables.splitDialog.originalAmount') }}: ¥{{ formatMoney(currentReceivable?.remainingValue) }}</p>
       </el-alert>
 
       <div v-for="(target, index) in splitTargets" :key="index" style="display: flex; gap: 10px; margin-bottom: 10px">
-        <el-select v-model="target.recipientId" placeholder="选择接收方" style="flex: 1">
+        <el-select v-model="target.recipientId" :placeholder="localeStore.t('receivables.splitDialog.recipient')" style="flex: 1">
           <el-option v-for="e in suppliers" :key="e.id" :label="e.name" :value="e.id" />
         </el-select>
-        <el-input-number v-model="target.amount" :min="0" placeholder="金额" style="width: 150px" />
-        <el-input v-model="target.purpose" placeholder="用途" style="width: 150px" />
+        <el-input-number v-model="target.amount" :min="0" :placeholder="localeStore.t('receivables.splitDialog.amount')" style="width: 150px" />
+        <el-input v-model="target.purpose" :placeholder="localeStore.t('receivables.splitDialog.purpose')" style="width: 150px" />
         <el-button type="danger" @click="splitTargets.splice(index, 1)" :disabled="splitTargets.length <= 1">
           <el-icon><Delete /></el-icon>
         </el-button>
@@ -204,39 +202,39 @@
 
       <el-button @click="addSplitTarget" style="margin-top: 10px">
         <el-icon><Plus /></el-icon>
-        添加接收方
+        {{ localeStore.t('receivables.splitDialog.addRecipient') }}
       </el-button>
 
       <template #footer>
-        <el-button @click="showSplitDialog = false">取消</el-button>
-        <el-button type="primary" @click="handleSplit" :loading="splitLoading">确认拆分</el-button>
+        <el-button @click="showSplitDialog = false">{{ localeStore.t('receivables.splitDialog.cancel') }}</el-button>
+        <el-button type="primary" @click="handleSplit" :loading="splitLoading">{{ localeStore.t('receivables.splitDialog.confirm') }}</el-button>
       </template>
     </el-dialog>
 
-    <!-- 转让对话框 -->
-    <el-dialog v-model="showTransferDialog" title="转让应收账款" width="400px">
+    <el-dialog v-model="showTransferDialog" :title="localeStore.t('receivables.transferDialog.title')" width="400px">
       <el-form :model="transferForm" label-width="80px">
-        <el-form-item label="接收方">
-          <el-select v-model="transferForm.toEnterpriseId" placeholder="选择接收企业" style="width: 100%">
+        <el-form-item :label="localeStore.t('receivables.transferDialog.recipient')">
+          <el-select v-model="transferForm.toEnterpriseId" :placeholder="localeStore.t('receivables.transferDialog.recipientPlaceholder')" style="width: 100%">
             <el-option v-for="e in suppliers" :key="e.id" :label="e.name" :value="e.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="转让原因">
+        <el-form-item :label="localeStore.t('receivables.transferDialog.reason')">
           <el-input v-model="transferForm.reason" type="textarea" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showTransferDialog = false">取消</el-button>
-        <el-button type="primary" @click="handleTransfer" :loading="transferLoading">确认转让</el-button>
+        <el-button @click="showTransferDialog = false">{{ localeStore.t('receivables.transferDialog.cancel') }}</el-button>
+        <el-button type="primary" @click="handleTransfer" :loading="transferLoading">{{ localeStore.t('receivables.transferDialog.confirm') }}</el-button>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
+import { useLocaleStore } from '@/store/locale'
 import { getEnterprisesByRole } from '@/api/enterprise'
 import { getMyHoldingReceivables, getMyIssuedReceivables, getAvailableForFinancing, issueReceivable, splitReceivable, transferReceivable, settleReceivable } from '@/api/receivable'
 import { uploadContract } from '@/api/contract'
@@ -245,14 +243,13 @@ import { UploadFilled } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const userStore = useUserStore()
+const localeStore = useLocaleStore()
 
 const loading = ref(false)
 const receivables = ref([])
 const suppliers = ref([])
-
 const currentReceivable = ref(null)
 
-// 签发相关
 const showIssueDialog = ref(false)
 const issueLoading = ref(false)
 const issueFormRef = ref()
@@ -267,12 +264,12 @@ const issueForm = reactive({
   description: ''
 })
 
-const issueRules = {
-  holderId: [{ required: true, message: '请选择接收方', trigger: 'change' }],
-  faceValue: [{ required: true, message: '请输入票面金额', trigger: 'blur' }],
-  maturityDate: [{ required: true, message: '请选择到期日', trigger: 'change' }],
-  annualRate: [{ required: true, message: '请设置年化利率', trigger: 'change' }]
-}
+const issueRules = computed(() => ({
+  holderId: [{ required: true, message: localeStore.t('receivables.messages.selectReceiver'), trigger: 'change' }],
+  faceValue: [{ required: true, message: localeStore.t('receivables.messages.infoRequired'), trigger: 'blur' }],
+  maturityDate: [{ required: true, message: localeStore.t('receivables.messages.infoRequired'), trigger: 'change' }],
+  annualRate: [{ required: true, message: localeStore.t('receivables.messages.infoRequired'), trigger: 'change' }]
+}))
 
 const showSplitDialog = ref(false)
 const splitLoading = ref(false)
@@ -286,15 +283,15 @@ const transferForm = reactive({
   reason: ''
 })
 
-const statusLabels = {
-  CREATED: '待确权',
-  CONFIRMED: '已确权',
-  FINANCED: '已融资',
-  PARTIALLY_FINANCED: '部分融资',
-  SETTLED: '已结算',
-  EXPIRED: '已过期',
-  CANCELLED: '已取消'
-}
+const statusLabels = computed(() => ({
+  CREATED: localeStore.t('receivables.statusLabels.CREATED'),
+  CONFIRMED: localeStore.t('receivables.statusLabels.CONFIRMED'),
+  FINANCED: localeStore.t('receivables.statusLabels.FINANCED'),
+  PARTIALLY_FINANCED: localeStore.t('receivables.statusLabels.PARTIALLY_FINANCED'),
+  SETTLED: localeStore.t('receivables.statusLabels.SETTLED'),
+  EXPIRED: localeStore.t('receivables.statusLabels.EXPIRED'),
+  CANCELLED: localeStore.t('receivables.statusLabels.CANCELLED')
+}))
 
 const statusType = {
   CREATED: 'warning',
@@ -308,7 +305,8 @@ const statusType = {
 
 function formatMoney(value) {
   if (!value) return '0'
-  return Number(value).toLocaleString('zh-CN')
+  const formatter = new Intl.NumberFormat(localeStore.locale === 'en' ? 'en-US' : localeStore.locale === 'zh-TW' ? 'zh-Hant-TW' : 'zh-CN')
+  return formatter.format(Number(value))
 }
 
 function formatFileSize(bytes) {

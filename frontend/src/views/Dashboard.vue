@@ -4,13 +4,13 @@
       <el-col :span="6">
         <div class="card-box stats-card">
           <div class="stats-value">{{ stats.totalEnterprises || 0 }}</div>
-          <div class="stats-label">注册企业</div>
+          <div class="stats-label">{{ localeStore.t('dashboard.totalEnterprises') }}</div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="card-box stats-card">
           <div class="stats-value">{{ stats.activeReceivables || 0 }}</div>
-          <div class="stats-label">活跃通证</div>
+          <div class="stats-label">{{ localeStore.t('dashboard.activeReceivables') }}</div>
         </div>
       </el-col>
       <el-col :span="6">
@@ -18,7 +18,7 @@
           <div class="stats-value" style="color: #67C23A">
             {{ formatMoney(stats.totalReceivableValue) }}
           </div>
-          <div class="stats-label">应收账款总额</div>
+          <div class="stats-label">{{ localeStore.t('dashboard.totalReceivableValue') }}</div>
         </div>
       </el-col>
       <el-col :span="6">
@@ -26,7 +26,7 @@
           <div class="stats-value" style="color: #E6A23C">
             {{ formatMoney(stats.totalFinancedValue) }}
           </div>
-          <div class="stats-label">融资总额</div>
+          <div class="stats-label">{{ localeStore.t('dashboard.totalFinancingValue') }}</div>
         </div>
       </el-col>
     </el-row>
@@ -35,24 +35,23 @@
       <el-col :span="16">
         <div class="card-box">
           <h3 style="margin-bottom: 20px">
-            {{ userStore.enterpriseRole === 'FINANCIAL_INST' ? '可融资的应收账款' :
-               userStore.enterpriseRole === 'CORE_ENTERPRISE' ? '我签发的应收账款' : '我的应收账款' }}
+            {{ currentSectionTitle }}
           </h3>
           <el-table :data="receivables" v-loading="loading" style="width: 100%">
-            <el-table-column prop="tokenId" label="通证ID" width="100" />
-            <el-table-column prop="issuer.name" label="签发方" />
-            <el-table-column prop="faceValue" label="金额" width="150">
+            <el-table-column prop="tokenId" :label="localeStore.t('dashboard.tokenId')" width="100" />
+            <el-table-column prop="issuer.name" :label="localeStore.t('dashboard.issuer')" />
+            <el-table-column prop="faceValue" :label="localeStore.t('dashboard.amount')" width="150">
               <template #default="{ row }">
                 ¥{{ formatMoney(row.faceValue) }}
               </template>
             </el-table-column>
-            <el-table-column prop="maturityDate" label="到期日" width="120" />
-            <el-table-column prop="status" label="状态" width="100">
+            <el-table-column prop="maturityDate" :label="localeStore.t('dashboard.maturity')" width="120" />
+            <el-table-column prop="status" :label="localeStore.t('dashboard.status')" width="100">
               <template #default="{ row }">
                 <el-tag :type="statusType[row.status]">{{ statusLabels[row.status] }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="txHash" label="交易哈希" width="150">
+            <el-table-column prop="txHash" :label="localeStore.t('dashboard.txHash')" width="150">
               <template #default="{ row }">
                 <el-tooltip v-if="row.txHash" :content="row.txHash" placement="top">
                   <span class="hash-text">{{ row.txHash?.slice(0, 10) }}...</span>
@@ -60,29 +59,29 @@
                 <span v-else style="color: #909399">-</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="180">
+            <el-table-column :label="localeStore.t('dashboard.action')" width="180">
               <template #default="{ row }">
-                <el-button size="small" @click="viewDetail(row)">详情</el-button>
+                <el-button size="small" @click="viewDetail(row)">{{ localeStore.t('dashboard.details') }}</el-button>
                 <el-button
                   v-if="row.status === 'CONFIRMED'"
                   type="primary"
                   size="small"
                   @click="openFinancing(row)"
                 >
-                  融资
+                  {{ localeStore.t('dashboard.finance') }}
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
           <div v-if="receivables.length === 0 && !loading" class="empty-state">
-            <el-empty description="暂无应收账款" />
+            <el-empty :description="localeStore.t('dashboard.noReceivables')" />
           </div>
         </div>
       </el-col>
 
       <el-col :span="8">
         <div class="card-box">
-          <h3 style="margin-bottom: 20px">快捷操作</h3>
+          <h3 style="margin-bottom: 20px">{{ localeStore.t('dashboard.quickActions') }}</h3>
           <el-space direction="vertical" fill style="width: 100%">
             <el-button
               v-if="userStore.enterpriseRole === 'CORE_ENTERPRISE'"
@@ -91,7 +90,7 @@
               @click="showIssueDialog = true"
             >
               <el-icon><Plus /></el-icon>
-              签发应收账款
+              {{ localeStore.t('dashboard.issueReceivable') }}
             </el-button>
             <el-button
               v-if="userStore.enterpriseRole === 'SUPPLIER'"
@@ -100,17 +99,17 @@
               @click="router.push('/financing')"
             >
               <el-icon><Money /></el-icon>
-              申请融资
+              {{ localeStore.t('dashboard.applyFinancing') }}
             </el-button>
             <el-button style="width: 100%" @click="router.push('/receivables')">
               <el-icon><Document /></el-icon>
-              查看全部通证
+              {{ localeStore.t('dashboard.viewAllTokens') }}
             </el-button>
           </el-space>
         </div>
 
         <div class="card-box" style="margin-top: 20px" v-if="pendingFinancing.length > 0">
-          <h3 style="margin-bottom: 20px">待处理融资申请</h3>
+          <h3 style="margin-bottom: 20px">{{ localeStore.t('dashboard.pendingApplications') }}</h3>
           <el-timeline>
             <el-timeline-item
               v-for="item in pendingFinancing"
@@ -119,7 +118,7 @@
             >
               <p>{{ item.borrower?.name }}</p>
               <p style="color: #909399; font-size: 12px">
-                申请金额: ¥{{ formatMoney(item.financingAmount) }}
+                {{ localeStore.t('dashboard.borrowAmount') }}: ¥{{ formatMoney(item.financingAmount) }}
               </p>
             </el-timeline-item>
           </el-timeline>
@@ -127,11 +126,10 @@
       </el-col>
     </el-row>
 
-    <!-- 签发应收账款对话框 -->
-    <el-dialog v-model="showIssueDialog" title="签发应收账款" width="500px">
+    <el-dialog v-model="showIssueDialog" :title="localeStore.t('dashboard.issueDialog.title')" width="500px">
       <el-form :model="issueForm" label-width="100px">
-        <el-form-item label="持有方">
-          <el-select v-model="issueForm.holderId" placeholder="选择供应商" style="width: 100%">
+        <el-form-item :label="localeStore.t('dashboard.issueDialog.holder')">
+          <el-select v-model="issueForm.holderId" :placeholder="localeStore.t('dashboard.issueDialog.holderPlaceholder')" style="width: 100%">
             <el-option
               v-for="e in suppliers"
               :key="e.id"
@@ -140,7 +138,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="金额(元)">
+        <el-form-item :label="localeStore.t('dashboard.issueDialog.amount')">
           <el-input-number
             v-model="issueForm.faceValue"
             :min="0"
@@ -148,15 +146,15 @@
             style="width: 100%"
           />
         </el-form-item>
-        <el-form-item label="到期日期">
+        <el-form-item :label="localeStore.t('dashboard.issueDialog.maturity')">
           <el-date-picker
             v-model="issueForm.maturityDate"
             type="date"
-            placeholder="选择日期"
+            :placeholder="localeStore.t('dashboard.issueDialog.maturityPlaceholder')"
             style="width: 100%"
           />
         </el-form-item>
-        <el-form-item label="年化利率">
+        <el-form-item :label="localeStore.t('dashboard.issueDialog.annualRate')">
           <el-input-number
             v-model="issueForm.annualRate"
             :min="0"
@@ -166,22 +164,23 @@
             style="width: 100%"
           />
         </el-form-item>
-        <el-form-item label="备注">
+        <el-form-item :label="localeStore.t('dashboard.issueDialog.remark')">
           <el-input v-model="issueForm.description" type="textarea" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showIssueDialog = false">取消</el-button>
-        <el-button type="primary" @click="handleIssue" :loading="issueLoading">确认签发</el-button>
+        <el-button @click="showIssueDialog = false">{{ localeStore.t('dashboard.issueDialog.cancel') }}</el-button>
+        <el-button type="primary" @click="handleIssue" :loading="issueLoading">{{ localeStore.t('dashboard.issueDialog.submit') }}</el-button>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
+import { useLocaleStore } from '@/store/locale'
 import { getEnterprisesByRole } from '@/api/enterprise'
 import { getMyHoldingReceivables, getMyIssuedReceivables, getAvailableForFinancing, issueReceivable, getMyPendingFinancing } from '@/api/receivable'
 import { getGlobalStats, getMyStats } from '@/api/dashboard'
@@ -190,6 +189,7 @@ import dayjs from 'dayjs'
 
 const router = useRouter()
 const userStore = useUserStore()
+const localeStore = useLocaleStore()
 
 const loading = ref(false)
 const stats = ref({})
@@ -208,15 +208,22 @@ const issueForm = reactive({
   description: ''
 })
 
-const statusLabels = {
-  CREATED: '待确权',
-  CONFIRMED: '已确权',
-  FINANCED: '已融资',
-  PARTIALLY_FINANCED: '部分融资',
-  SETTLED: '已结算',
-  EXPIRED: '已过期',
-  CANCELLED: '已取消'
-}
+const currentSectionTitle = computed(() => {
+  const role = userStore.enterpriseRole
+  if (role === 'FINANCIAL_INST') return localeStore.t('dashboard.receivablesForRole.FINANCIAL_INST')
+  if (role === 'CORE_ENTERPRISE') return localeStore.t('dashboard.receivablesForRole.CORE_ENTERPRISE')
+  return localeStore.t('dashboard.receivablesForRole.default')
+})
+
+const statusLabels = computed(() => ({
+  CREATED: localeStore.t('dashboard.statusLabels.CREATED'),
+  CONFIRMED: localeStore.t('dashboard.statusLabels.CONFIRMED'),
+  FINANCED: localeStore.t('dashboard.statusLabels.FINANCED'),
+  PARTIALLY_FINANCED: localeStore.t('dashboard.statusLabels.PARTIALLY_FINANCED'),
+  SETTLED: localeStore.t('dashboard.statusLabels.SETTLED'),
+  EXPIRED: localeStore.t('dashboard.statusLabels.EXPIRED'),
+  CANCELLED: localeStore.t('dashboard.statusLabels.CANCELLED')
+}))
 
 const statusType = {
   CREATED: 'warning',

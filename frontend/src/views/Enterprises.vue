@@ -1,30 +1,30 @@
 <template>
   <div class="page-container">
     <div class="page-header">
-      <h2>企业管理</h2>
+      <h2>{{ localeStore.t('enterprises.title') }}</h2>
       <el-button type="primary" @click="showAddDialog = true">
         <el-icon><Plus /></el-icon>
-        添加企业
+        {{ localeStore.t('enterprises.addEnterprise') }}
       </el-button>
     </div>
 
     <div class="card-box">
       <el-tabs v-model="activeTab" @tab-change="handleTabChange">
-        <el-tab-pane label="全部企业" name="all" />
-        <el-tab-pane label="核心企业" name="CORE_ENTERPRISE" />
-        <el-tab-pane label="供应商" name="SUPPLIER" />
-        <el-tab-pane label="金融机构" name="FINANCIAL_INST" />
+        <el-tab-pane :label="localeStore.t('enterprises.tabs.all')" name="all" />
+        <el-tab-pane :label="localeStore.t('enterprises.tabs.CORE_ENTERPRISE')" name="CORE_ENTERPRISE" />
+        <el-tab-pane :label="localeStore.t('enterprises.tabs.SUPPLIER')" name="SUPPLIER" />
+        <el-tab-pane :label="localeStore.t('enterprises.tabs.FINANCIAL_INST')" name="FINANCIAL_INST" />
       </el-tabs>
 
       <el-table :data="enterprises" v-loading="loading" style="width: 100%">
-        <el-table-column prop="creditCode" label="统一社会信用代码" width="200" />
-        <el-table-column prop="name" label="企业名称" />
-        <el-table-column prop="role" label="角色" width="120">
+        <el-table-column prop="creditCode" :label="localeStore.t('enterprises.columns.creditCode')" width="200" />
+        <el-table-column prop="name" :label="localeStore.t('enterprises.columns.name')" />
+        <el-table-column prop="role" :label="localeStore.t('enterprises.columns.role')" width="120">
           <template #default="{ row }">
             <el-tag :type="roleType[row.role]">{{ roleLabels[row.role] }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="creditScore" label="信用评分" width="120">
+        <el-table-column prop="creditScore" :label="localeStore.t('enterprises.columns.creditScore')" width="120">
           <template #default="{ row }">
             <el-progress
               :percentage="row.creditScore / 10"
@@ -33,79 +33,77 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="blockchainAddress" label="区块链地址" width="160">
+        <el-table-column prop="blockchainAddress" :label="localeStore.t('enterprises.columns.address')" width="160">
           <template #default="{ row }">
             <el-tooltip :content="row.blockchainAddress" placement="top">
               <span>{{ row.blockchainAddress?.slice(0, 10) }}...</span>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="isActive" label="状态" width="80">
+        <el-table-column prop="isActive" :label="localeStore.t('enterprises.columns.status')" width="80">
           <template #default="{ row }">
             <el-tag :type="row.isActive ? 'success' : 'danger'">
-              {{ row.isActive ? '正常' : '禁用' }}
+              {{ row.isActive ? localeStore.t('enterprises.status.normal') : localeStore.t('enterprises.status.disabled') }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column :label="localeStore.t('enterprises.columns.action')" width="180">
           <template #default="{ row }">
-            <el-button size="small" @click="viewEnterprise(row)">详情</el-button>
-            <el-button size="small" type="warning" @click="editScore(row)">调整评分</el-button>
+            <el-button size="small" @click="viewEnterprise(row)">{{ localeStore.t('common.details') }}</el-button>
+            <el-button size="small" type="warning" @click="editScore(row)">{{ localeStore.t('enterprises.dialog.scoreTitle') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
 
-    <!-- 添加企业对话框 -->
-    <el-dialog v-model="showAddDialog" title="添加企业" width="500px">
+    <el-dialog v-model="showAddDialog" :title="localeStore.t('enterprises.dialog.addTitle')" width="500px">
       <el-form ref="addFormRef" :model="addForm" :rules="addRules" label-width="120px">
-        <el-form-item label="统一信用代码" prop="creditCode">
-          <el-input v-model="addForm.creditCode" maxlength="18" show-word-limit placeholder="18位统一社会信用代码" />
+        <el-form-item :label="localeStore.t('enterprises.columns.creditCode')" prop="creditCode">
+          <el-input v-model="addForm.creditCode" maxlength="18" show-word-limit :placeholder="localeStore.t('enterprises.columns.creditCode')" />
         </el-form-item>
-        <el-form-item label="企业名称" prop="name">
-          <el-input v-model="addForm.name" placeholder="请输入企业名称" />
+        <el-form-item :label="localeStore.t('enterprises.columns.name')" prop="name">
+          <el-input v-model="addForm.name" :placeholder="localeStore.t('enterprises.validation.nameRequired')" />
         </el-form-item>
-        <el-form-item label="法人代表">
-          <el-input v-model="addForm.legalPerson" placeholder="请输入法人代表" />
+        <el-form-item :label="localeStore.t('enterprises.columns.legalPerson')">
+          <el-input v-model="addForm.legalPerson" :placeholder="localeStore.t('enterprises.dialog.legalPersonPlaceholder')" />
         </el-form-item>
-        <el-form-item label="联系电话">
-          <el-input v-model="addForm.phone" placeholder="请输入联系电话" />
+        <el-form-item :label="localeStore.t('enterprises.columns.phone')">
+          <el-input v-model="addForm.phone" :placeholder="localeStore.t('enterprises.dialog.phonePlaceholder')" />
         </el-form-item>
-        <el-form-item label="企业地址">
-          <el-input v-model="addForm.address" placeholder="请输入企业地址" />
+        <el-form-item :label="localeStore.t('enterprises.columns.enterpriseAddress')">
+          <el-input v-model="addForm.address" :placeholder="localeStore.t('enterprises.dialog.addressPlaceholder')" />
         </el-form-item>
-        <el-form-item label="企业角色" prop="role">
+        <el-form-item :label="localeStore.t('enterprises.columns.role')" prop="role">
           <el-select v-model="addForm.role" style="width: 100%">
-            <el-option label="核心企业" value="CORE_ENTERPRISE" />
-            <el-option label="供应商" value="SUPPLIER" />
-            <el-option label="金融机构" value="FINANCIAL_INST" />
-            <el-option label="监管机构" value="REGULATOR" />
+            <el-option :label="localeStore.t('roles.CORE_ENTERPRISE')" value="CORE_ENTERPRISE" />
+            <el-option :label="localeStore.t('roles.SUPPLIER')" value="SUPPLIER" />
+            <el-option :label="localeStore.t('roles.FINANCIAL_INST')" value="FINANCIAL_INST" />
+            <el-option :label="localeStore.t('roles.REGULATOR')" value="REGULATOR" />
           </el-select>
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showAddDialog = false">取消</el-button>
-        <el-button type="primary" @click="handleAdd" :loading="addLoading">确认添加</el-button>
+        <el-button @click="showAddDialog = false">{{ localeStore.t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="handleAdd" :loading="addLoading">{{ localeStore.t('enterprises.dialog.confirmAdd') }}</el-button>
       </template>
     </el-dialog>
 
-    <!-- 企业详情对话框 -->
-    <el-dialog v-model="showDetailDialog" :title="currentEnterprise?.name + ' - 详情'" width="650px">
+    <el-dialog v-model="showDetailDialog" :title="currentEnterprise?.name + ' - ' + localeStore.t('enterprises.dialog.detailTitle')" width="650px">
       <el-descriptions :column="2" border v-if="currentEnterprise">
-        <el-descriptions-item label="企业名称" :span="2">{{ currentEnterprise.name }}</el-descriptions-item>
-        <el-descriptions-item label="统一信用代码" :span="2">{{ currentEnterprise.creditCode }}</el-descriptions-item>
-        <el-descriptions-item label="法人代表">{{ currentEnterprise.legalPerson || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="联系电话">{{ currentEnterprise.phone || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="企业地址" :span="2">{{ currentEnterprise.address || '-' }}</el-descriptions-item>
-        <el-descriptions-item label="企业角色">
+        <el-descriptions-item :label="localeStore.t('enterprises.columns.name')" :span="2">{{ currentEnterprise.name }}</el-descriptions-item>
+        <el-descriptions-item :label="localeStore.t('enterprises.columns.creditCode')" :span="2">{{ currentEnterprise.creditCode }}</el-descriptions-item>
+        <el-descriptions-item :label="localeStore.t('enterprises.columns.legalPerson')">{{ currentEnterprise.legalPerson || '-' }}</el-descriptions-item>
+        <el-descriptions-item :label="localeStore.t('enterprises.columns.phone')">{{ currentEnterprise.phone || '-' }}</el-descriptions-item>
+        <el-descriptions-item :label="localeStore.t('enterprises.columns.enterpriseAddress')" :span="2">{{ currentEnterprise.address || '-' }}</el-descriptions-item>
+        <el-descriptions-item :label="localeStore.t('enterprises.columns.role')">
           <el-tag :type="roleType[currentEnterprise.role]">{{ roleLabels[currentEnterprise.role] }}</el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="状态">
+        <el-descriptions-item :label="localeStore.t('enterprises.columns.status')">
           <el-tag :type="currentEnterprise.isActive ? 'success' : 'danger'">
-            {{ currentEnterprise.isActive ? '正常' : '禁用' }}
+            {{ currentEnterprise.isActive ? localeStore.t('enterprises.status.normal') : localeStore.t('enterprises.status.disabled') }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="信用评分">
+        <el-descriptions-item :label="localeStore.t('enterprises.columns.creditScore')">
           <el-progress
             :percentage="currentEnterprise.creditScore / 10"
             :color="getScoreColor(currentEnterprise.creditScore)"
@@ -118,45 +116,46 @@
         </el-descriptions-item>
       </el-descriptions>
 
-      <el-divider content-position="left">区块链信息</el-divider>
+      <el-divider :content-position="'left'">{{ localeStore.t('enterprises.blockchain.title') }}</el-divider>
       <el-descriptions :column="1" border v-if="currentEnterprise">
-        <el-descriptions-item label="区块链地址">
+        <el-descriptions-item :label="localeStore.t('enterprises.blockchain.address')">
           <span class="hash-text" :class="{ 'offline': isOfflineAddress(currentEnterprise.blockchainAddress) }">
-            {{ currentEnterprise.blockchainAddress || '未注册' }}
+            {{ currentEnterprise.blockchainAddress || localeStore.t('enterprises.status.unregistered') }}
           </span>
         </el-descriptions-item>
-        <el-descriptions-item label="上链状态">
-          <el-tag v-if="isOfflineAddress(currentEnterprise.blockchainAddress)" type="warning">离线模式</el-tag>
-          <el-tag v-else-if="currentEnterprise.blockchainAddress" type="success">已上链注册</el-tag>
-          <el-tag v-else type="info">未注册</el-tag>
+        <el-descriptions-item :label="localeStore.t('enterprises.blockchain.onChainStatus')">
+          <el-tag v-if="isOfflineAddress(currentEnterprise.blockchainAddress)" type="warning">{{ localeStore.t('enterprises.status.offline') }}</el-tag>
+          <el-tag v-else-if="currentEnterprise.blockchainAddress" type="success">{{ localeStore.t('enterprises.status.online') }}</el-tag>
+          <el-tag v-else type="info">{{ localeStore.t('enterprises.status.unregistered') }}</el-tag>
         </el-descriptions-item>
       </el-descriptions>
 
       <template #footer>
-        <el-button @click="showDetailDialog = false">关闭</el-button>
+        <el-button @click="showDetailDialog = false">{{ localeStore.t('enterprises.dialog.close') }}</el-button>
       </template>
     </el-dialog>
 
-    <!-- 调整评分对话框 -->
-    <el-dialog v-model="showScoreDialog" title="调整信用评分" width="400px">
+    <el-dialog v-model="showScoreDialog" :title="localeStore.t('enterprises.dialog.scoreTitle')" width="400px">
       <div style="text-align: center; margin-bottom: 20px">
         <p>{{ currentEnterprise?.name }}</p>
-        <p style="color: #909399; font-size: 14px">当前评分: {{ currentEnterprise?.creditScore }}</p>
+        <p style="color: #909399; font-size: 14px">{{ localeStore.t('enterprises.columns.currentScore') }}: {{ currentEnterprise?.creditScore }}</p>
       </div>
       <el-slider v-model="newScore" :min="0" :max="1000" :step="10" show-input />
       <template #footer>
-        <el-button @click="showScoreDialog = false">取消</el-button>
-        <el-button type="primary" @click="handleUpdateScore" :loading="scoreLoading">保存</el-button>
+        <el-button @click="showScoreDialog = false">{{ localeStore.t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="handleUpdateScore" :loading="scoreLoading">{{ localeStore.t('enterprises.dialog.save') }}</el-button>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { getEnterprises, getEnterprisesByRole, registerEnterprise, updateCreditScore } from '@/api/enterprise'
 import { ElMessage } from 'element-plus'
+import { useLocaleStore } from '@/store/locale'
 
+const localeStore = useLocaleStore()
 const loading = ref(false)
 const enterprises = ref([])
 const activeTab = ref('all')
@@ -173,18 +172,18 @@ const addForm = reactive({
   role: 'SUPPLIER'
 })
 
-const addRules = {
+const addRules = computed(() => ({
   creditCode: [
-    { required: true, message: '请输入统一社会信用代码', trigger: 'blur' },
-    { len: 18, message: '统一社会信用代码必须为18位', trigger: 'blur' }
+    { required: true, message: localeStore.t('enterprises.validation.creditCodeRequired'), trigger: 'blur' },
+    { len: 18, message: localeStore.t('enterprises.validation.creditCodeLen'), trigger: 'blur' }
   ],
   name: [
-    { required: true, message: '请输入企业名称', trigger: 'blur' }
+    { required: true, message: localeStore.t('enterprises.validation.nameRequired'), trigger: 'blur' }
   ],
   role: [
-    { required: true, message: '请选择企业角色', trigger: 'change' }
+    { required: true, message: localeStore.t('enterprises.validation.roleRequired'), trigger: 'change' }
   ]
-}
+}))
 
 const showScoreDialog = ref(false)
 const scoreLoading = ref(false)
@@ -192,12 +191,12 @@ const currentEnterprise = ref(null)
 const newScore = ref(700)
 const showDetailDialog = ref(false)
 
-const roleLabels = {
-  CORE_ENTERPRISE: '核心企业',
-  SUPPLIER: '供应商',
-  FINANCIAL_INST: '金融机构',
-  REGULATOR: '监管机构'
-}
+const roleLabels = computed(() => ({
+  CORE_ENTERPRISE: localeStore.t('roles.CORE_ENTERPRISE'),
+  SUPPLIER: localeStore.t('roles.SUPPLIER'),
+  FINANCIAL_INST: localeStore.t('roles.FINANCIAL_INST'),
+  REGULATOR: localeStore.t('roles.REGULATOR')
+}))
 
 const roleType = {
   CORE_ENTERPRISE: 'danger',
@@ -260,10 +259,9 @@ async function handleAdd() {
   addLoading.value = true
   try {
     await registerEnterprise(addForm)
-    ElMessage.success('企业添加成功')
+    ElMessage.success(localeStore.t('enterprises.messages.addSuccess'))
     showAddDialog.value = false
     loadEnterprises()
-    // 重置表单
     addFormRef.value.resetFields()
   } catch (error) {
     console.error(error)
@@ -279,7 +277,7 @@ async function handleUpdateScore() {
   scoreLoading.value = true
   try {
     await updateCreditScore(currentEnterprise.value.id, newScore.value)
-    ElMessage.success('信用评分更新成功')
+    ElMessage.success(localeStore.t('enterprises.messages.scoreSuccess'))
     showScoreDialog.value = false
     loadEnterprises()
   } catch (error) {

@@ -17,37 +17,37 @@ const routes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/Dashboard.vue'),
-        meta: { title: '工作台', icon: 'Odometer' }
+        meta: { titleKey: 'nav.dashboard', icon: 'Odometer' }
       },
       {
         path: 'enterprises',
         name: 'Enterprises',
         component: () => import('@/views/Enterprises.vue'),
-        meta: { title: '企业管理', icon: 'OfficeBuilding' }
+        meta: { titleKey: 'nav.enterprises', icon: 'OfficeBuilding' }
       },
       {
         path: 'receivables',
         name: 'Receivables',
         component: () => import('@/views/Receivables.vue'),
-        meta: { title: '应收账款', icon: 'Document' }
+        meta: { titleKey: 'nav.receivables', icon: 'Document' }
       },
       {
         path: 'receivables/:id',
         name: 'ReceivableDetail',
         component: () => import('@/views/ReceivableDetail.vue'),
-        meta: { title: '通证详情', hidden: true }
+        meta: { titleKey: 'nav.tokenDetail', hidden: true }
       },
       {
         path: 'financing',
         name: 'Financing',
         component: () => import('@/views/Financing.vue'),
-        meta: { title: '融资管理', icon: 'Money' }
+        meta: { titleKey: 'nav.financing', icon: 'Money' }
       },
       {
         path: 'transfer',
         name: 'Transfer',
         component: () => import('@/views/Transfer.vue'),
-        meta: { title: '流转记录', icon: 'Switch' }
+        meta: { titleKey: 'nav.transfer', icon: 'Switch' }
       }
     ]
   },
